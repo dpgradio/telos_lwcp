@@ -1,0 +1,51 @@
+= Telos LWCP gem
+
+== Description
+
+The telos_lwcp gem was written to communicate with Telos VX systems. Basic commands for control are implemented, and some low-level functions to implement the ones missing. Full documentation of the VX lwcp protocol extensions can be found here: http://magnetic.beep.pl/VX/vx_lwcp_reference.pdf
+
+== Example
+
+  engine = TelosLWCP::Engine.new(host: '192.168.0.5')
+  engine.connect do |conn|
+    conn.login("user", "")
+    conn.select_studio(2)
+    conn.call(3, "09123456789")
+  end
+
+== Implemented basic commands
+=== connect
+=== login(user, password)
+=== select_studio(studio_nr)
+=== seize(line_nr)
+=== call(line_nr, number)
+
+== Low-level functions
+=== write(command, object, arguments={})
+
+Sends a command to the server. This is always in the format of command, object & arguments. For example the call command is implemented as:
+
+  conn.write(:call, "studio.line#1", number: "09123456")
+
+=== wait(callbacks, &block)
+
+Pauses the main thread to wait for specific callbacks from the reading thread. This is mostly used in collaboration with the write command. Full example of how the seize command is implemented:
+
+  conn.wait(
+    [:event, "studio.line#1"] => proc { true }, # Line is seized
+    [:ack, "studio.line#1"] => proc {|obj| TelosLWCP::Error.new(obj.system_items[:msg]) } # Line isn't seized, throw error
+  ) do
+    conn.write(:seize, "studio.line#1")
+  end
+
+=== subscribe(command:"", object:"", matcher:"", &block)
+
+Subscribe to specific or general messages sent from the system. When passed with no parameters, every message is yielded to the block. command & object can both be strings or regexp's. matcher is a block that gets yielded the received message.
+
+  conn.subscribe(command: "event", object: /studio.line#\d+/) do |mess|
+    puts "Someone did smth: #{mess.arguments[:state]}"
+  end
+
+== Contributing
+
+Contributions are welcomed. Feel free to submit a pull request to fix bugs or add additional functionality to this script.
