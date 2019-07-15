@@ -37,6 +37,15 @@ module TelosLWCP
       end
     end
 
+    def list_studios
+      wait(
+        [:indi, :cc] => proc {|r| r.arguments[:studio_list] }
+      ) do
+        write :get, "cc studio_list"
+      end
+    end
+    
+
     def select_studio(id)
       wait(
           [:event, :studio] => proc {|r| r },
