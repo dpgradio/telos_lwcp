@@ -1,4 +1,5 @@
 require 'socket'
+require 'timeout'
 
 module TelosLWCP
   class Error < StandardError; end
