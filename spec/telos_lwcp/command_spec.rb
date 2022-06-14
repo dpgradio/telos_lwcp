@@ -25,5 +25,13 @@ describe TelosLWCP::Command do
       it { expect(subject.arguments[:line_list]).to be_an_instance_of Array }
       it { expect(subject.arguments[:line_list].size).to eq 12 }
     end
+
+    context "server response with incoming call" do
+      subject { TelosLWCP::Command.incoming("event studio id=11, name=\"Virtuele studio L3\", show_id=6, show_name=\"Virtuele studio L3\", next=1, pnext=1, busy_all=FALSE, num_lines=6, num_hybrids=6, num_hyb_fixed=0, mute=FALSE, show_locked=FALSE, auto_answer=FALSE, line_list=[[RINGING_IN, RINGING_IN, \"Vstu 3 L1\", \"sip:4331@dpgmediaradio.3cx.be\", \"sip:32484326161@127.0.0.1:5060;nf=e\", 0, 1, \"\", INCOMING], [IDLE, IDLE, \"Vstu 3 L2\", \"sip:4332@dpgmediaradio.3cx.be\", NULL, 0, NULL, \"\", NONE], [IDLE, IDLE, \"Vstu 3 L3\", \"sip:4333@dpgmediaradio.3cx.be\", NULL, 0, NULL, \"\", NONE], [IDLE, IDLE, \"Vstu 3 L4\", \"sip:4334@dpgmediaradio.3cx.be\", NULL, 0, NULL, \"\", NONE], [IDLE, IDLE, \"Vstu 3 L5\", \"sip:4335@dpgmediaradio.3cx.be\", NULL, 0, NULL, \"\", NONE], [IDLE, IDLE, \"Vstu 3 L6\", \"sip:4336@dpgmediaradio.3cx.be\", NULL, 0, NULL, \"\", NONE]]") }
+
+      it { expect(subject.arguments[:line_list]).to be_an_instance_of Array }
+      it { expect(subject.arguments[:line_list].size).to eq 6 }
+      it { expect(subject.arguments[:line_list][0][4]).to eq 'sip:32484326161@127.0.0.1:5060;nf=e' }
+    end
   end
 end

@@ -53,8 +53,12 @@ module TelosLWCP
         (raw_string + ' ').each_char do |char|
           case char
           when '='              # Assigning something, so everything before this is the key
-            key = buffer
-            buffer = ""
+            if in_string
+              buffer << char
+            else
+              key = buffer
+              buffer = ""
+            end
           when '"'              # Toggle in-string status
             in_string = !in_string
             buffer << char
