@@ -21,7 +21,7 @@ GEM
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
-    rake (12.3.3)
+    rake (13.0.6)
     rspec (3.11.0)
       rspec-core (~> 3.11.0)
       rspec-expectations (~> 3.11.0)
@@ -43,12 +43,12 @@ PLATFORMS
 
 DEPENDENCIES
   autotest
-  bundler (~> 1.7)
+  bundler (~> 2.2.29)
   pry
-  rake (~> 12.3)
+  rake (~> 13.0)
   rspec
   rspec-autotest
   telos_lwcp!
 
 BUNDLED WITH
-   1.17.3
+   2.2.29
